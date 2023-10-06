@@ -74,5 +74,5 @@ components:
         endDate:
           type: string
           format: date-time
-        priceValue:
+        price:
           type: number
