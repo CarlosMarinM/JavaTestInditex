@@ -1,0 +1,78 @@
+openapi: 3.0.3
+info:
+  title: E-commerce API Specification for product prices
+  description: |-
+    A simple e-commerce API that allows one operation:
+    - Get product prices from the e-commerce database
+  version: 1.0-SNAPSHOT
+tags:
+  - name: prices
+    description: Product prices query
+servers:
+  - url: 'http://localhost:8080'
+    description: dev
+paths:
+  /price:
+    get:
+      tags:
+        - prices
+      summary: Get product prices information
+      description: Get prouct prices information using issue date, product identificator and brand identificator
+      operationId: findPrices
+      parameters:
+        - name: issueDate
+          in: query
+          description: Date on which the rate price is applied
+          required: true
+          schema:
+            type: string
+            format: date-time
+            example: '2021-01-30T08:30:00Z'
+        - name: productId
+          in: query
+          description: Product identificator
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: brandId
+          in: query
+          description: Brand identificator
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PriceResponse'
+        '404':
+          description: Price not found
+          content: {}
+components:
+  schemas:
+    PriceResponse:
+      type: object
+      properties:
+        productId:
+          type: integer
+          format: int64
+        brandId:
+          type: integer
+          format: int32
+        priceList:
+          type: integer
+          format: int32
+        startDate:
+          type: string
+          format: date-time
+        endDate:
+          type: string
+          format: date-time
+        priceValue:
+          type: number
